@@ -1,0 +1,314 @@
+@keyframes tableBgPulse {
+	0% { background-color: #222; }
+	25% { background-color: #0a1931; }
+	50% { background-color: #11224c; }
+	75% { background-color: #0a1931; }
+	100% { background-color: #222; }
+}
+.calc-ip-modal-table {
+	animation: tableBgPulse 8s linear infinite;
+}
+.calc-ip-main {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+	gap: 32px;
+	width: 100%;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 32px 0;
+}
+.calc-ip-left {
+	flex: 1 1 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+.calc-ip-right {
+	flex: 1 1 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.calc-ip-form-section {
+	min-height: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+.calc-ip-btn {
+	background: #00aaff;
+	color: #fff;
+	border: none;
+	padding: 10px 28px;
+	font-size: 1.1rem;
+	border-radius: 6px;
+	cursor: pointer;
+	font-family: 'Oswald', Arial, sans-serif;
+	transition: background 0.2s;
+}
+.calc-ip-btn:hover {
+	background: #0077cc;
+}
+.calc-ip-form button {
+	transition: background 0.2s;
+}
+.calc-ip-form button:hover {
+	background: #0077cc;
+}
+.calc-ip-form-section label {
+	color: #fff !important;
+	font-size: 1.35rem !important;
+}
+.calc-ip-form-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 0;
+	margin-top: 0;
+	margin-bottom: 32px;
+}
+.calc-ip {
+	animation: pulseContainer 4s ease-in-out infinite;
+}
+
+@keyframes pulseContainer {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.08);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+/* Animación constante para el título de la calculadora IPv4 */
+.calc-ip-content h2 {
+	animation: pulseCalcTitle 3s ease-in-out infinite;
+}
+
+@keyframes pulseCalcTitle {
+	0% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.7;
+		transform: scale(1.18);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* Video de fondo para calculadora IPv4 */
+.calc-ip {
+	position: relative;
+	background: transparent !important;
+	max-width: 1000px;
+	width: 95%;
+	margin: 48px auto;
+	border-radius: 16px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+	padding: 0;
+	overflow: hidden;
+}
+.calc-ip-content {
+	position: relative;
+	z-index: 2;
+	padding: 40px 32px;
+	text-align: center;
+	background: transparent !important;
+}
+.calc-ip-video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	object-fit: cover;
+	opacity: 0.35;
+	pointer-events: none;
+	border-radius: 16px;
+}
+.calc-ip-content h2,
+.calc-ip-content p {
+	position: relative;
+	z-index: 2;
+	color: #fff;
+}
+.calc-ip.bg-custom {
+	background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+}
+/* Estilos para la sección de calculadora IPv4 */
+.calc-ip {
+	background: transparent !important;
+	max-width: 600px;
+	margin: 48px auto;
+	border-radius: 16px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+	padding: 40px 32px;
+	text-align: center;
+}
+.showcase {
+	position: relative;
+	overflow: hidden;
+}
+
+.showcase-video {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: 1;
+	object-fit: cover;
+	opacity: 0.35;
+	pointer-events: none;
+}
+.showcase-content {
+	position: relative;
+	background: none !important;
+	max-width: 1100px;
+	width: 100%;
+	min-height: 420px;
+	text-align: center;
+	border-radius: 16px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+	padding: 24px 64px 36px 64px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.showcase-video {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	min-width: 100%;
+	min-height: 100%;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	object-fit: cover;
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.showcase-content h1,
+.showcase-content p,
+.showcase-content button {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	word-break: break-word;
+}
+/* Showcase Section */
+.showcase {
+	background: transparent;
+	padding: 48px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+.showcase-content h1 {
+	font-size: 2.5rem;
+	color: #fff;
+	margin-bottom: 16px;
+}
+
+.showcase-content p {
+	font-size: 1.2rem;
+	color: #fff;
+	margin-bottom: 24px;
+	font-weight: 400;
+	letter-spacing: 0.5px;
+}
+
+.showcase-content button {
+	background: #00aaff;
+	color: #fff;
+	border: none;
+	padding: 12px 32px;
+	font-size: 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: 'Oswald', Arial, sans-serif;
+	transition: background 0.2s;
+}
+.showcase-content button:hover {
+	background: #0077cc;
+}
+nav ul li a:hover {
+	border-bottom: 2px solid #ffffff;
+	padding-bottom: 4px;
+	transition: border-color 0.2s;
+}
+/* Estilo para el contenedor del nav */
+.nav-container {
+	background-color: #111;
+	padding: 16px 40px 16px 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logo {
+	height: 80px;
+	width: auto;
+	margin-left: 40px;
+	margin-right: 32px;
+	object-fit: contain;
+}
+
+body {
+	background-color: #050a1f;
+	margin: 0;
+	font-family: 'Oswald', Arial, sans-serif;
+}
+
+nav ul {
+	display: flex;
+	gap: 64px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav ul li a {
+	text-decoration: none;
+	color: #fff;
+	font-weight: 500;
+	font-size: 1.2rem;
+}
+/* Animación para el texto del showcase */
+.showcase-content p {
+	animation: pulseText 8s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+	0% {
+		opacity: 1;
+		letter-spacing: 0.5px;
+	}
+	50% {
+		opacity: 0.6;
+		letter-spacing: 2px;
+	}
+	100% {
+		opacity: 1;
+		letter-spacing: 0.5px;
+	}
+}

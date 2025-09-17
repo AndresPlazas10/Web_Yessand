@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLSM - Subneteo de longitud fija</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="nav-container">
+        <img src="/assets/image.png" alt="Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="calculadora-ip.html">calculadoraIP</a></li>
+                <li><a href="flsm.html">FLSM</a></li>
+                <li><a href="vlsm.html">VLSM</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="calc-ip-main">
+        <section class="calc-ip calc-ip-left">
+            <div class="calc-ip-content">
+                <video class="calc-ip-video" autoplay muted loop playsinline>
+                    <source src="/assets/video_calculadoraIP.mp4" type="video/mp4">
+                    Tu navegador no soporta el video.
+                </video>
+                <h2>FLSM - Subneteo de longitud fija</h2>
+                <p>
+                    Calcula subredes de longitud fija (FLSM) para una red IPv4. Ingresa la dirección de red, el prefijo y el número de subredes que deseas obtener.
+                </p>
+            </div>
+        </section>
+        <section class="calc-ip-form-section calc-ip-right">
+            <form class="calc-ip-form" autocomplete="off">
+                <div style="margin-bottom: 18px;">
+                    <label for="ip" class="calc-ip-label">Dirección de red :</label>
+                    <input type="text" id="ip" name="ip" placeholder="Ej: 192.168.1.0" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem;">
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <label for="prefix" class="calc-ip-label">Prefijo de red :</label>
+                    <input type="number" id="prefix" name="prefix" min="0" max="32" placeholder="Ej: 24" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem; width: 80px;">
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <label for="subnets" class="calc-ip-label">Número de subredes :</label>
+                    <input type="number" id="subnets" name="subnets" min="2" max="256" placeholder="Ej: 4" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem; width: 80px;">
+                </div>
+                <div style="margin-bottom: 18px;">
+                    <label for="hosts" class="calc-ip-label">Hosts por subred :</label>
+                    <input type="number" id="hosts" name="hosts" min="2" max="65534" placeholder="Ej: 50" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem; width: 80px;" readonly>
+                </div>
+                <button type="submit" class="calc-ip-btn">Calcular</button>
+            </form>
+        </section>
+    </div>
+    <script src="main-flsm.js"></script>
+</body>
+</html>
