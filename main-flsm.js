@@ -48,49 +48,15 @@ function showFlsmModal(ip, prefix, numSubredes) {
 	modal.style.alignItems = 'center';
 	modal.style.zIndex = '9999';
 
-	// Generar datos de subredes con el nuevo prefijo
-	// Utilidades
-	function ipToInt(ip) {
-		return ip.split('.').reduce((acc, oct) => (acc << 8) + parseInt(oct, 10), 0) >>> 0;
-	}
-	function intToIp(int) {
-		return [24,16,8,0].map(shift => (int >>> shift) & 255).join('.');
-	}
-	prefix = parseInt(prefix);
-	numSubredes = parseInt(numSubredes);
-	const bitsSubred = Math.ceil(Math.log2(numSubredes));
-	const nuevoPrefijo = prefix + bitsSubred;
-	const maskInt = nuevoPrefijo > 32 ? 0 : (~((1 << (32 - nuevoPrefijo)) - 1)) >>> 0;
-	const salto = (1 << (32 - nuevoPrefijo));
-	// Calcular la dirección de red base alineada al prefijo original
-	const ipInt = ipToInt(ip);
-	const maskOriginal = prefix === 0 ? 0 : (~((1 << (32 - prefix)) - 1)) >>> 0;
-	const baseInt = ipInt & maskOriginal;
-	let subredes = [];
-	for (let i = 0; i < numSubredes; i++) {
-		const netInt = baseInt + (i * salto);
-		const broadcastInt = netInt + salto - 1;
-		const hostsPorSubred = nuevoPrefijo === 32 ? 1 : (nuevoPrefijo === 31 ? 2 : Math.max(0, salto - 2));
-		const firstHostInt = hostsPorSubred > 0 ? netInt + 1 : netInt;
-		const lastHostInt = hostsPorSubred > 0 ? broadcastInt - 1 : broadcastInt;
-		subredes.push({
-			subred: (i + 1).toString(),
-			nHosts: hostsPorSubred.toString(),
-			ipRed: intToIp(netInt),
-			mascara: intToIp(maskInt),
-			primerHost: hostsPorSubred > 0 ? intToIp(firstHostInt) : '-',
-			ultimoHost: hostsPorSubred > 0 ? intToIp(lastHostInt) : '-',
-			broadcast: intToIp(broadcastInt)
-		});
-	}
+	const subredes = calcularSubredesFLSM(ip, prefix, numSubredes);
 	let currentPage = 1;
 	const rowsPerPage = 5;
 	const totalPages = Math.ceil(subredes.length / rowsPerPage);
 
 	document.body.appendChild(modal);
 	function renderTable(page) {
-			let tableRows = '';
-			currentPage = page;
+		let tableRows = '';
+		currentPage = page;
 		tableRows += `<tr><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Subred</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>N hosts</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>IP de red</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Máscara</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Primer host</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Último host</th><th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Broadcast</th></tr>`;
 		const start = (page - 1) * rowsPerPage;
 		const end = Math.min(start + rowsPerPage, subredes.length);
@@ -129,9 +95,12 @@ function showFlsmModal(ip, prefix, numSubredes) {
 				opacity: 1;
 				transform: translateY(0) scale(1);
 			}
+			.flsm-modal-table th, .flsm-modal-table td {
+				color: #fff !important;
+			}
 			</style>
 			<div style="background: #111; color: #fff; padding: 32px 40px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.18); font-family: 'Oswald', Arial, sans-serif; text-align: center; min-width: 480px; max-width: 98vw;">
-				<div style="margin-bottom: 24px; font-size: 1.3rem;">Subredes FLSM</div>
+				<div style="margin-bottom: 24px; font-size: 1.3rem; color: #fff;">Subredes FLSM</div>
 				<table class="flsm-modal-table tabla-animada" id="tabla-flsm-animada" style='width:96%; border-collapse:collapse; margin-bottom:24px; border:2px solid #fff; table-layout:fixed;'>
 					<tbody>
 						${tableRows}

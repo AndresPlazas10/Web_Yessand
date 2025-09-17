@@ -24,6 +24,12 @@
             </ul>
         </nav>
     </div>
+    <div id="modal-vlsm" class="modal-vlsm" style="display:none;">
+        <div class="modal-vlsm-content">
+            <span class="modal-vlsm-close" tabindex="0">&times;</span>
+            <!-- Aquí irá el contenido del modal -->
+        </div>
+    </div>
     <div class="calc-ip-main">
         <section class="calc-ip calc-ip-left">
             <div class="calc-ip-content">
@@ -37,27 +43,76 @@
                 </p>
             </div>
         </section>
+    <!-- Tabla eliminada debajo del formulario -->
         <section class="calc-ip-form-section calc-ip-right">
             <form class="calc-ip-form" autocomplete="off">
                 <div style="margin-bottom: 18px;">
-                    <label for="ip" class="calc-ip-label">Dirección de red :</label>
+                    <label for="ip" class="calc-ip-label">Dirección IP :</label>
                     <input type="text" id="ip" name="ip" placeholder="Ej: 192.168.1.0" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem;">
+                    <div id="ip-error" style="color:#ff4444; font-family:'Oswald', Arial, sans-serif; font-size:1rem; margin-top:6px;"></div>
                 </div>
                 <div style="margin-bottom: 18px;">
                     <label for="prefix" class="calc-ip-label">Prefijo de red :</label>
                     <input type="number" id="prefix" name="prefix" min="0" max="32" placeholder="Ej: 24" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem; width: 80px;">
                 </div>
                 <div style="margin-bottom: 18px;">
-                    <label class="calc-ip-label">Hosts requeridos por subred :</label>
-                    <div id="vlsm-hosts-list" style="margin-bottom:8px;"></div>
-                    <button type="button" id="add-vlsm-host" style="background:#00aaff; color:#fff; border:none; padding:6px 18px; border-radius:6px; cursor:pointer; font-family:'Oswald', Arial, sans-serif; margin-bottom:8px;">Agregar subred</button>
+                    <label for="subnets" class="calc-ip-label">Número de subredes :</label>
+                    <input type="number" id="subnets" name="subnets" min="2" max="256" placeholder="Ej: 4" style="padding: 8px 14px; border-radius: 6px; border: none; font-size: 1rem; width: 80px;">
                 </div>
                 <button type="submit" class="calc-ip-btn">Calcular</button>
             </form>
         </section>
     </div>
+
     <script src="main-vlsm.js"></script>
+
+    <div id="tabla-vlsm-container" style="width:100%; display:none; justify-content:center; margin:32px 0 0 0;">
+    <table id="tabla-vlsm" style="width:100%; max-width:900px; border-collapse:collapse; border:2px solid #fff; table-layout:fixed; background:#111; color:#fff; border-radius:12px;">
+            <thead>
+                <tr>
+                    <th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Subred</th>
+                    <th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Número de hosts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" style="text-align:center; padding:18px 0;">
+                        <button type="button" id="btn-calcular-vlsm" class="calc-ip-btn">Calcular</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
+    // Validación en tiempo real de dirección IP con mensaje de error y cálculo automático de prefijo
+    const ipInput = document.getElementById('ip');
+    const prefixInput = document.getElementById('prefix');
+    const errorMsg = document.getElementById('ip-error');
+    function isValidIPv4(ip) {
+        const regex = /^(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})(\.(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})){3}$/;
+        return regex.test(ip);
+    }
+    function getDefaultPrefix(ip) {
+        const firstOctet = parseInt(ip.split('.')[0], 10);
+        if (firstOctet >= 1 && firstOctet <= 126) return 8;
+        if (firstOctet >= 128 && firstOctet <= 191) return 16;
+        if (firstOctet >= 192 && firstOctet <= 223) return 24;
+        return 24;
+    }
+    ipInput.addEventListener('input', function() {
+        const ip = ipInput.value.trim();
+        if (isValidIPv4(ip)) {
+            ipInput.style.borderColor = '#00c853';
+            errorMsg.textContent = '';
+            prefixInput.value = getDefaultPrefix(ip);
+        } else {
+            ipInput.style.borderColor = '#ff1744';
+            errorMsg.textContent = 'Dirección de red inválida.';
+            prefixInput.value = '';
+        }
+    });
+
     // Menú hamburguesa para móviles
     const menuToggle = document.querySelector('.menu-toggle');
     const navList = document.querySelector('.nav-list');
@@ -65,6 +120,86 @@
         navList.classList.toggle('open');
         menuToggle.classList.toggle('active');
     });
+
+    // Crear filas en la tabla según el número de subredes
+    const form = document.querySelector('.calc-ip-form');
+    const tablaContainer = document.getElementById('tabla-vlsm-container');
+    const tablaBody = document.querySelector('#tabla-vlsm tbody');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        tablaBody.innerHTML = '';
+        const numSubredes = parseInt(document.getElementById('subnets').value, 10);
+        if (isNaN(numSubredes) || numSubredes < 1) return;
+        tablaContainer.style.display = 'flex';
+        for (let i = 1; i <= numSubredes; i++) {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td style='border:1px solid #fff; padding:14px 8px;'>Subred ${i}</td><td style='border:1px solid #fff; padding:14px 8px;'><input type='number' min='1' placeholder='Número de hosts' style='width:70px; padding:4px 6px; border-radius:6px; border:none; font-size:0.95rem;'></td>`;
+            tablaBody.appendChild(row);
+        }
+        // Agregar fila con botón Calcular como última fila
+        const rowBtn = document.createElement('tr');
+        rowBtn.innerHTML = `<td colspan='2' style='text-align:center; padding:18px 0;'><button type='button' id='btn-calcular-vlsm' class='calc-ip-btn'>Calcular</button></td>`;
+        tablaBody.appendChild(rowBtn);
+
+        // Agregar evento para mostrar el modal al hacer clic en el botón
+        setTimeout(() => {
+            const btnCalcularVlsm = document.getElementById('btn-calcular-vlsm');
+            if (btnCalcularVlsm) {
+                btnCalcularVlsm.onclick = function() {
+                    // Obtener datos del formulario
+                    const ip = document.getElementById('ip').value.trim();
+                    const prefix = parseInt(document.getElementById('prefix').value, 10);
+                    const hostsInputs = tablaBody.querySelectorAll('input[type="number"]');
+                    const hostsArray = Array.from(hostsInputs).map(input => input.value);
+                    // Calcular VLSM y mostrar modal
+                    const resultados = window.calcularVLSM(ip, prefix, hostsArray);
+                    window.llenarTablaVLSMModal(resultados);
+                };
+            }
+        }, 0);
+    });
+
+    // Función para mostrar el modal VLSM
+    function mostrarModalVlsm() {
+        let modal = document.getElementById('modal-vlsm');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modal-vlsm';
+            modal.className = 'modal-vlsm';
+            document.body.appendChild(modal);
+        }
+        // Obtener datos del formulario y tabla
+        const ip = document.getElementById('ip').value.trim();
+        const prefix = parseInt(document.getElementById('prefix').value, 10);
+        const tablaBody = document.querySelector('#tabla-vlsm tbody');
+        const hostsInputs = tablaBody.querySelectorAll('input[type="number"]');
+        const hostsArray = Array.from(hostsInputs).map(input => input.value);
+        // Calcular VLSM y mostrar modal con resultados
+        const resultados = window.calcularVLSM(ip, prefix, hostsArray);
+        window.llenarTablaVLSMModal(resultados);
+    }
+        <!-- Eliminado bloque HTML fuera de contexto JS -->
+        document.getElementById('close-vlsm-modal-btn').onclick = function() {
+            modal.style.display = 'none';
+        };
     </script>
+
+    <div id="tabla-vlsm-container" style="width:100%; display:none; justify-content:center; margin:32px 0 0 0;">
+        <table id="tabla-vlsm" style="width:96%; max-width:600px; border-collapse:collapse; border:2px solid #fff; table-layout:fixed; background:#111; color:#fff; border-radius:12px;">
+            <thead>
+                <tr>
+                    <th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Subred</th>
+                    <th style='font-weight:bold; border:2px solid #fff; padding:14px 8px; background:#222;'>Número de hosts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí irán los datos de subredes -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Eliminado script duplicado -->
+<footer style="width:100%; background:#111; color:#fff; text-align:center; padding:18px 0; font-family:'Oswald', Arial, sans-serif; font-size:1.1rem; margin-top:32px;">
+  Desarrollada por Andres Plazas y Yessid Jimenez &mdash; Universidad de Boyacá
+</footer>
 </body>
 </html>

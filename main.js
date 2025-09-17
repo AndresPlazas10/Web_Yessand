@@ -93,7 +93,7 @@ function calcularIPv4(ip, prefix) {
 			}
 			</style>
 			<div style="background: #111; color: #fff; padding: 32px 40px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.18); font-family: 'Oswald', Arial, sans-serif; text-align: center; min-width: 480px; max-width: 98vw;">
-				<div style="margin-bottom: 24px; font-size: 1.3rem;">Resultados</div>
+				<div style="margin-bottom: 24px; font-size: 1.3rem; color: #fff; text-align:center;">Resultados</div>
 				<table class="calc-ip-modal-table tabla-animada" id="tabla-ip-animada" style='width:96%; border-collapse:collapse; margin-bottom:24px; border:2px solid #fff; table-layout:fixed;'>
 					<tbody>
 						${tableRows}
