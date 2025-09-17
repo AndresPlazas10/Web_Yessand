@@ -1,3 +1,158 @@
+/* ====== MENÚ HAMBURGUESA ====== */
+.menu-toggle {
+	display: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	margin-left: auto;
+	z-index: 20;
+}
+.menu-icon {
+	display: block;
+	width: 28px;
+	height: 4px;
+	background: #fff;
+	border-radius: 2px;
+	position: relative;
+}
+.menu-icon::before,
+.menu-icon::after {
+	content: '';
+	display: block;
+	width: 28px;
+	height: 4px;
+	background: #fff;
+	border-radius: 2px;
+	position: absolute;
+	left: 0;
+	transition: 0.3s;
+}
+.menu-icon::before {
+	top: -9px;
+}
+.menu-icon::after {
+	top: 9px;
+}
+.menu-toggle.active .menu-icon {
+	background: transparent;
+}
+.menu-toggle.active .menu-icon::before {
+	top: 0;
+	transform: rotate(45deg);
+}
+.menu-toggle.active .menu-icon::after {
+	top: 0;
+	transform: rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+	.menu-toggle {
+		display: block;
+	}
+	nav {
+		width: 100%;
+	}
+	.nav-list {
+		display: none;
+		flex-direction: column;
+		gap: 16px;
+		background: #111;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		padding: 16px 0 8px 0;
+		box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+		z-index: 10;
+	}
+	.nav-list.open {
+		display: flex;
+	}
+	.nav-container {
+		position: relative;
+	}
+}
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 900px) {
+	.calc-ip-main {
+		flex-direction: column;
+		gap: 16px;
+		padding: 16px 0;
+	}
+	.calc-ip-left, .calc-ip-right {
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+	}
+	.showcase-content {
+		padding: 16px 12px 24px 12px;
+		min-height: 280px;
+	}
+	.showcase-content h1 {
+		font-size: 2rem;
+	}
+	.showcase-content p {
+		font-size: 1rem;
+	}
+	.logo {
+		height: 56px;
+		margin-left: 12px;
+		margin-right: 12px;
+	}
+	.nav-container {
+		flex-direction: column;
+		padding: 12px 8px;
+		gap: 8px;
+	}
+	nav ul {
+		gap: 24px;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	nav ul li a {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.showcase-content {
+		padding: 8px 4px 12px 4px;
+		min-height: 180px;
+	}
+	.showcase-content h1 {
+		font-size: 1.3rem;
+	}
+	.showcase-content p {
+		font-size: 0.95rem;
+	}
+	.logo {
+		height: 40px;
+		margin-left: 4px;
+		margin-right: 4px;
+	}
+	.nav-container {
+		padding: 8px 2px;
+	}
+	nav ul {
+		gap: 12px;
+	}
+	.calc-ip-content {
+		padding: 16px 4px;
+	}
+	.calc-ip {
+		padding: 16px 4px;
+		margin: 16px auto;
+		max-width: 98vw;
+	}
+	.calc-ip-form-section label {
+		font-size: 1rem !important;
+	}
+	.calc-ip-btn {
+		padding: 8px 18px;
+		font-size: 1rem;
+	}
+}
 @keyframes tableBgPulse {
 	0% { background-color: #222; }
 	25% { background-color: #0a1931; }
