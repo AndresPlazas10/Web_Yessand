@@ -9,20 +9,29 @@ function calcularSubredesFLSM(ip, prefix, numSubredes) {
 	function maskFromPrefix(prefix) {
 		return prefix === 0 ? 0 : (~((1 << (32 - prefix)) - 1)) >>> 0;
 	}
+
 	const baseInt = ipToInt(ip);
-	const maskInt = maskFromPrefix(prefix);
-	const salto = (1 << (32 - prefix));
+	// Calcular el nuevo prefijo para dividir la red en el número de subredes solicitado
+	let newPrefix = prefix;
+	for (let p = prefix; p <= 30; p++) {
+		if ((1 << (p - prefix)) >= numSubredes) {
+			newPrefix = p;
+			break;
+		}
+	}
+	const maskInt = maskFromPrefix(newPrefix);
+	const salto = (1 << (32 - newPrefix));
 	let subredes = [];
+	const hostsPorSubred = salto - 2;
 	for (let i = 0; i < numSubredes; i++) {
-		const netInt = baseInt + (i * salto);
+		const netInt = (baseInt & maskFromPrefix(prefix)) + (i * salto);
 		const broadcastInt = netInt + salto - 1;
-		const hostsPorSubred = prefix === 32 ? 1 : (prefix === 31 ? 2 : Math.max(0, salto - 2));
 		const firstHostInt = hostsPorSubred > 0 ? netInt + 1 : netInt;
-	const lastHostInt = hostsPorSubred > 1 ? broadcastInt - 1 : broadcastInt;
+		const lastHostInt = hostsPorSubred > 1 ? broadcastInt - 1 : broadcastInt;
 		subredes.push({
 			subred: (i + 1).toString(),
 			nHosts: hostsPorSubred.toString(),
-			ipRed: intToIp(netInt),
+			ipRed: intToIp(netInt) + ' /' + newPrefix,
 			mascara: intToIp(maskInt),
 			primerHost: hostsPorSubred > 0 ? intToIp(firstHostInt) : '-',
 			ultimoHost: hostsPorSubred > 0 ? intToIp(lastHostInt) : '-',
